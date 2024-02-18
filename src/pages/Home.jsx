@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../components/Header";
 import LetterForm from "../components/LetterForm";
 import LetterList from "../components/LetterList";
-
 import styled from "styled-components";
 
 function Home() {
