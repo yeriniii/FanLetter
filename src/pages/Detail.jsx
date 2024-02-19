@@ -8,11 +8,11 @@ import { deleteLetter, modifyLetter } from "../redux/modules/data";
 
 function Detail() {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
+  const { posts } = useSelector((state) => state.data);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState("");
   const { id } = useParams();
-  const { avatar, nickname, createdAt, writedTo, content } = data.find(
+  const { avatar, nickname, createdAt, writedTo, content } = posts.find(
     (item) => item.id === id
   );
   const navigate = useNavigate();

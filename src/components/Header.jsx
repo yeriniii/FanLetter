@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import MemberTabs from "./MemberTabs";
 import aespa from "../assets/aespa.jpeg";
+import Layout from "./Layout";
 
 const Header = ({ setSelectMember, selectMember }) => {
   return (
     <Container>
+      <Layout />
       <Title>에스파 팬레터 컬렉션</Title>
       <MemberTabs
         selectMember={selectMember}

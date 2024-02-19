@@ -45,6 +45,11 @@ export const getMyPage = async () => {
     );
     return response.data;
   } catch (error) {
+    if (error.response.status === 401) {
+      //token만료
+      //보통리프레시토큰받음
+      alert("token만료!");
+    }
     console.log(error);
   }
 };
@@ -68,4 +73,3 @@ export const updateProfile = async (accessToken, imgFile, nickname) => {
     console.log(error);
   }
 };
-export default login;

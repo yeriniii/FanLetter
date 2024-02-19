@@ -1,19 +1,20 @@
 import styled from "styled-components";
 import Letter from "./Letter";
-
 import { useSelector } from "react-redux";
-
 const LetterList = () => {
-  const data = useSelector((state) => state.data);
   const chooseMember = useSelector((state) => state.member);
+  const { posts } = useSelector((state) => state.data);
 
-  const filteredLetter = data.filter((letter) => {
+  const filteredLetter = posts.filter((letter) => {
     return letter.writedTo === chooseMember;
   });
+
   return (
     <LetterListWrapper>
       {filteredLetter.length > 0 ? (
-        filteredLetter.map((Fandata) => <Letter Fandata={Fandata}></Letter>)
+        filteredLetter.map((Fandata) => (
+          <Letter key={Fandata.id} Fandata={Fandata}></Letter>
+        ))
       ) : (
         <p>
           {chooseMember}에게 남겨진 팬레터가 없습니다. 첫 번째 팬 레터의

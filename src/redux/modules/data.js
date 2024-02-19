@@ -1,67 +1,66 @@
-import db from "db.json";
-import { createSlice } from "@reduxjs/toolkit";
-/*
-const ADD_LETTER = "data/ADD_LETTER";
-const DELETE_LETTER = "data/DELETE_LETTER";
-const MODIFY_LETTER = "data/MODIFY_LETTER";
-//action create
-export const addLetter = (payload) => {
-  return {
-    type: ADD_LETTER,
-    payload,
-  };
-};
-export const deleteLetter = (payload) => {
-  return {
-    type: DELETE_LETTER,
-    payload,
-  };
-};
-export const modifyLetter = (payload) => {
-  return {
-    type: MODIFY_LETTER,
-    payload,
-  };
-};
-*/
-const initialState = db.posts;
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-/*const data = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_LETTER:
-      return [...state, action.payload];
-    case DELETE_LETTER:
-      return state.filter((letter) => {
-        return letter.id !== action.payload;
-      });
-    case MODIFY_LETTER:
-      const { id, editedContent } = action.payload;
-      return state.map((letter) =>
-        letter.id === id ? { ...letter, content: editedContent } : letter
-      );
-
-    default:
-      return state;
+const initialState = {
+  isLoading: false,
+  posts: [],
+  error: null,
+  isError: false,
+};
+export const __getDatas = createAsyncThunk(
+  "__getDatas",
+  async (payload, thunkAPI) => {
+    //서버통신
+    try {
+      const response = await axios.get("http://localhost:5001/posts");
+      console.log(response.data);
+      //네트워크 요청성공시 디스패치해주는 기능
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
   }
-};
-*/
+);
 
 const dataSlice = createSlice({
   name: "data",
-  initialState,
+  initialState: initialState,
   reducers: {
     addLetter: (state, action) => {
-      return [...state, action.payload];
+      return { ...state, posts: [...state.posts, action.payload] };
       //state.push(action.payload); redux toolkit에 immer라는게 있어서 불변성유지가 자동으로 됌
     },
     deleteLetter: (state, action) => {
-      return state.filter((letter) => letter.id !== action.payload);
+      return {
+        ...state,
+        posts: state.posts.filter((letter) => letter.id !== action.payload),
+      };
     },
     modifyLetter: (state, action) => {
       const { id, editedContent } = action.payload;
-      return state.map((letter) =>
-        letter.id === id ? { ...letter, content: editedContent } : letter
-      );
+      return {
+        ...state,
+        posts: state.posts.map((letter) =>
+          letter.id === id ? { ...letter, content: editedContent } : letter
+        ), // 수정된 post만 업데이트
+      };
+    },
+  },
+  extraReducers: {
+    [__getDatas.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.posts = action.payload;
+    },
+    [__getDatas.pending]: (state, action) => {
+      state.isLoading = true;
+      state.isError = false;
+    },
+    [__getDatas.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.error = action.payload;
     },
   },
 });

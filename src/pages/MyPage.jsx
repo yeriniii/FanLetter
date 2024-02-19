@@ -4,16 +4,18 @@ import { useState } from "react";
 import styled from "styled-components";
 import default_profile from "../assets/default_profile.png";
 import { updateProfile } from "apis/login";
+import { useNavigate } from "react-router-dom";
 function MyPage() {
   const [data, setData] = useState();
   const [isEdit, setIsEdit] = useState(false);
   const [editName, setEditName] = useState("");
   const [editImg, setEditImg] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     getMyPage().then((res) => {
       setData(res);
     });
-  }, []);
+  }, [isEdit]);
 
   const handleEdit = () => {
     setIsEdit(true);
@@ -21,72 +23,86 @@ function MyPage() {
     setEditImg(data.avatar);
   };
   const handleEditSave = async () => {
-    const accessToken = localStorage.getItem("access");
-    await updateProfile(accessToken, editImg, editName);
+    try {
+      const accessToken = localStorage.getItem("access");
+      const response = await updateProfile(accessToken, editImg, editName);
+      console.log(response.message);
+      setIsEdit(false);
+    } catch (error) {
+      console.log("프로필업뎃안됌");
+    }
   };
   return (
-    <Container>
-      <MyPageWrapper>
-        <h1>프로필 관리</h1>
-        <UserInfo>
-          <ProfileImage>
-            <label htmlFor="fileInput">
-              <img
-                src={data.avatar ? data.avatar : default_profile}
-                alt="프로필 이미지"
-              />
-            </label>
-            {isEdit && (
-              <input
-                id="fileInput"
-                type="file"
-                style={{ display: "none" }}
-                onChange={(e) => setEditImg(e.target.files[0])}
-              />
-            )}
-          </ProfileImage>
-          <UserName>
+    <>
+      <HomeBtn>
+        <button onClick={() => navigate(`/`)}>Home</button>
+      </HomeBtn>
+      <Container>
+        <MyPageWrapper>
+          <h1>프로필 관리</h1>
+          <UserInfo>
+            <ProfileImage>
+              <label htmlFor="fileInput">
+                <img
+                  src={data?.avatar ? data.avatar : default_profile}
+                  alt="프로필 이미지"
+                />
+              </label>
+              {isEdit && (
+                <input
+                  id="fileInput"
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => setEditImg(e.target.files[0])}
+                />
+              )}
+            </ProfileImage>
+            <UserName>
+              {isEdit ? (
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+              ) : (
+                <span>{data?.nickname}</span>
+              )}
+            </UserName>
+            <UserId>{data?.id}</UserId>
+          </UserInfo>
+          <Button>
             {isEdit ? (
-              <input
-                type="text"
-                value={editName}
-                onChange={(e) => setEditName(e.target.value)}
-              />
+              <>
+                <button onClick={() => setIsEdit(false)}>취소</button>
+                <button onClick={handleEditSave}>저장</button>
+              </>
             ) : (
-              <span>{data?.nickname}</span>
+              <button onClick={handleEdit}>프로필 수정</button>
             )}
-          </UserName>
-          <UserId>{data?.id}</UserId>
-        </UserInfo>
-        <Button>
-          {isEdit ? (
-            <>
-              <button onClick={() => setIsEdit(false)}>취소</button>
-              <button onClick={handleEditSave}>저장</button>
-            </>
-          ) : (
-            <button onClick={handleEdit}>프로필 수정</button>
-          )}
-        </Button>
-      </MyPageWrapper>
-    </Container>
+          </Button>
+        </MyPageWrapper>
+      </Container>
+    </>
   );
 }
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  width: 50%;
+  height: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 const MyPageWrapper = styled.div`
   padding: 30px;
   border-radius: 10px;
   background-color: #ccc;
   flex-direction: column;
-  width: 40%;
-  height: 40%;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -152,6 +168,24 @@ const Button = styled.div`
     &:hover {
       background-color: teal;
       color: white;
+    }
+  }
+`;
+const HomeBtn = styled.div`
+  margin: 60px;
+  button {
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      background-color: gold;
+      color: black;
+      transform: scale(1.2);
     }
   }
 `;

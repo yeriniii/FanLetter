@@ -5,10 +5,11 @@ import { addLetter } from "../redux/modules/data";
 
 const LetterForm = () => {
   const dispatch = useDispatch();
-  const [nickname, setNickname] = useState("");
+  //const [nickname, setNickname] = useState("");
   const [content, setContent] = useState("");
   const [selectedMember, setSelectedMember] = useState("카리나");
-
+  const nickname = localStorage.getItem("nickname");
+  console.log(nickname);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (nickname === "" || content === "") {
@@ -27,7 +28,6 @@ const LetterForm = () => {
           content,
         })
       );
-      setNickname("");
       setContent("");
       setSelectedMember("카리나");
     }
@@ -38,12 +38,7 @@ const LetterForm = () => {
       <AddForm onSubmit={handleSubmit}>
         <FormField>
           <label id="nickname">닉네임:</label>
-          <textarea
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            cols="30"
-            placeholder="최대 20글자까지 작성할 수 있습니다."
-          ></textarea>
+          <p>{nickname}</p>
         </FormField>
 
         <FormField>
@@ -100,8 +95,15 @@ const FormField = styled.div`
   margin-bottom: 10px;
 
   label {
+    display: flex;
+    flex-direction: row;
     flex: 0 0 30%; /* 레이블 너비를 30%로 설정 */
     font-weight: bold;
+  }
+  p {
+    color: white;
+    font-weight: bold;
+    flex: 1;
   }
 
   textarea,

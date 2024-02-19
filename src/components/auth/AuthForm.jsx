@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { login, register } from "../../apis/login";
 import useForm from "hooks/useForm";
+import { logined } from "../../redux/modules/authSlice";
 const textMap = {
   login: "로그인",
   register: "회원가입",
@@ -15,19 +16,26 @@ const AuthForm = ({ type }) => {
   const [id, onChangeId] = useForm();
   const [pw, onChangePw] = useForm();
   const [name, onChangeName] = useForm();
+
   const authHandler = async (e) => {
     e.preventDefault();
-    if (type === "login") {
-      const result = await login(id, pw);
-      const { accessToken, userId, success, avatar, nickname } = result;
-      localStorage.setItem("access", accessToken);
-      console.log(result);
-      alert("로그인완료");
-      navigate(`/`);
-    } else if (type === "register") {
-      await register(id, pw, name);
-      alert("회원가입완료");
-      navigate(`/login`);
+    try {
+      if (type === "login") {
+        const result = await login(id, pw);
+        const { accessToken, userId, success, avatar, nickname } = result;
+        localStorage.setItem("access", accessToken);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("nickname", nickname);
+        alert("로그인완료");
+        navigate(`/`);
+        dispatch(logined());
+      } else if (type === "register") {
+        await register(id, pw, name);
+        alert("회원가입완료");
+        navigate(`/login`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -57,6 +65,7 @@ const AuthForm = ({ type }) => {
               placeholder="닉네임(1~10글자)"
             ></input>
           )}
+
           <ButtonWrapper>
             <button>{text}</button>
           </ButtonWrapper>
@@ -146,4 +155,5 @@ const Footer = styled.div`
     }
   }
 `;
+
 export default AuthForm;
