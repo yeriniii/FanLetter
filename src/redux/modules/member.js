@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+/*
 const SELECT_MEMBER = "member/SELECT_MEMBER";
 
 export const selectMember = (payload) => {
@@ -16,4 +18,17 @@ const member = (state = initialState, action) => {
       return state;
   }
 };
-export default member;
+*/
+const initialState = "카리나";
+const memberSlice = createSlice({
+  name: "member",
+  initialState,
+  reducers: {
+    selectMember: (state, action) => {
+      return (state = action.payload);
+    },
+  },
+});
+
+export default memberSlice.reducer;
+export const { selectMember } = memberSlice.actions;

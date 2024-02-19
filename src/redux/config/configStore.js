@@ -1,12 +1,15 @@
-import { createStore } from "redux";
-import { combineReducers } from "redux";
 import data from "../modules/data";
+//import auth from "../modules/authSlice";
 import member from "../modules/member";
-import { devToolsEnhancer } from "redux-devtools-extension";
-const rootReducer = combineReducers({
-  data: data,
-  member,
+
+import { configureStore } from "@reduxjs/toolkit";
+
+const store = configureStore({
+  reducer: {
+    data: data,
+    //auth: auth,
+    member: member,
+  },
 });
-const store = createStore(rootReducer, devToolsEnhancer());
 
 export default store;
