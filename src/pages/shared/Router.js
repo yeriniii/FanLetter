@@ -5,10 +5,6 @@ import Detail from "../../components/Letters/Detail";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
 import MyPage from "../../components/MyPage";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { __getDatas } from "../../redux/modules/data";
 import NonAuthRouter from "./NonAuthRouter";
 import AuthRouter from "./AuthRouter";
 
