@@ -149,6 +149,7 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   button {
+    height: 37px;
     width: 100%;
     border: none;
     border-radius: 4px;
@@ -168,7 +169,7 @@ const Footer = styled.div`
     color: gray;
     text-decoration: underline;
     &:hover {
-      color: tomato;
+      color: teal;
     }
   }
 `;

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 function Layout() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [user, setUser] = useState(localStorage.getItem("userId"));
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -20,7 +20,7 @@ function Layout() {
     dispatch(logouted());
     setUser(null);
     //로그아웃되면 바로로그인화면
-    //navigate(`/login`);
+    navigate(`/login`);
   };
 
   return (

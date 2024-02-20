@@ -22,7 +22,60 @@ export const __getDatas = createAsyncThunk(
     }
   }
 );
+export const __postDatas = createAsyncThunk(
+  "__postDatas",
+  async (payload, thunkAPI) => {
+    //서버통신
+    try {
+      const response = await axios.post("http://localhost:5001/posts", payload);
+      console.log(response.data);
+      //네트워크 요청성공시 디스패치해주는 기능
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
+export const __deleteDatas = createAsyncThunk(
+  "__deleteDatas",
+  async (payload, thunkAPI) => {
+    //서버통신
+    try {
+      const response = await axios.delete(
+        `http://localhost:5001/posts/${payload}`
+      );
+      console.log(response.data);
+      //네트워크 요청성공시 디스패치해주는 기능
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __editDatas = createAsyncThunk(
+  "__editDatas",
+  async (payload, thunkAPI) => {
+    //서버통신
+    try {
+      const response = await axios.patch(
+        `http://localhost:5001/posts/${payload.id}`,
+        {
+          content: payload.content,
+        }
+      );
+      console.log(response.data);
+      //네트워크 요청성공시 디스패치해주는 기능
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 const dataSlice = createSlice({
   name: "data",
   initialState: initialState,

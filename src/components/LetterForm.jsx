@@ -1,16 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { addLetter } from "../redux/modules/data";
+import { __postDatas, addLetter } from "../redux/modules/data";
 
 const LetterForm = () => {
   const dispatch = useDispatch();
 
   const [content, setContent] = useState("");
   const [selectedMember, setSelectedMember] = useState("카리나");
-  const isLogin = useSelector((state) => state.auth.isLogin);
   const nickname = localStorage.getItem("nickname");
   const profilImg = localStorage.getItem("avatar");
+  const userId = localStorage.getItem("userId");
   const handleSubmit = (e) => {
     e.preventDefault();
     if (nickname === "" || content === "") {
@@ -21,6 +21,17 @@ const LetterForm = () => {
       alert("내용 100자 초과입니다!");
     } else {
       dispatch(
+        __postDatas({
+          id: crypto.randomUUID(),
+          createdAt: Date(),
+          writedTo: selectedMember,
+          nickname,
+          content,
+          avatar: profilImg,
+          userId,
+        })
+      );
+      dispatch(
         addLetter({
           id: crypto.randomUUID(),
           createdAt: Date(),
@@ -28,6 +39,7 @@ const LetterForm = () => {
           nickname,
           content,
           avatar: profilImg,
+          userId,
         })
       );
       setContent("");
@@ -38,44 +50,40 @@ const LetterForm = () => {
   return (
     <LetterFormWrapper>
       <AddForm onSubmit={handleSubmit}>
-        {isLogin ? ( //로그인했다면 폼보여주고 안했으면 로그인하라는메세지띄워줌
-          <>
-            <FormField>
-              <label id="nickname">닉네임:</label>
-              <p>{nickname}</p>
-            </FormField>
+        <>
+          <FormField>
+            <label id="nickname">닉네임:</label>
+            <p>{nickname}</p>
+          </FormField>
 
-            <FormField>
-              <label id="content">내용:</label>
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                cols="30"
-                rows="5"
-                placeholder="최대 100자까지만 작성할 수 있습니다."
-              ></textarea>{" "}
-            </FormField>
+          <FormField>
+            <label id="content">내용:</label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              cols="30"
+              rows="5"
+              placeholder="최대 100자까지만 작성할 수 있습니다."
+            ></textarea>{" "}
+          </FormField>
 
-            <FormField>
-              <label id="selectmember">누구에게 보내실건가요?</label>
-              <select
-                id="aespa"
-                value={selectedMember}
-                onChange={(e) => setSelectedMember(e.target.value)}
-              >
-                <option value="카리나">카리나</option>
-                <option value="윈터">윈터</option>
-                <option value="닝닝">닝닝</option>
-                <option value="지젤">지젤</option>
-              </select>
-            </FormField>
-            <SubmitButton>
-              <button type="submit">팬레터 등록</button>
-            </SubmitButton>
-          </>
-        ) : (
-          <LoginMsg>로그인 후 이용 가능합니다.</LoginMsg>
-        )}
+          <FormField>
+            <label id="selectmember">누구에게 보내실건가요?</label>
+            <select
+              id="aespa"
+              value={selectedMember}
+              onChange={(e) => setSelectedMember(e.target.value)}
+            >
+              <option value="카리나">카리나</option>
+              <option value="윈터">윈터</option>
+              <option value="닝닝">닝닝</option>
+              <option value="지젤">지젤</option>
+            </select>
+          </FormField>
+          <SubmitButton>
+            <button type="submit">팬레터 등록</button>
+          </SubmitButton>
+        </>
       </AddForm>
     </LetterFormWrapper>
   );

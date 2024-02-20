@@ -4,23 +4,30 @@ import styled from "styled-components";
 import default_profile from "../assets/default_profile.png";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteLetter, modifyLetter } from "../redux/modules/data";
+import {
+  __deleteDatas,
+  __editDatas,
+  deleteLetter,
+  modifyLetter,
+} from "../redux/modules/data";
 
 function Detail() {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.data);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState("");
+  const user = localStorage.getItem("userId");
   const { id } = useParams();
-  const { avatar, nickname, createdAt, writedTo, content } = posts.find(
+  const { avatar, nickname, createdAt, writedTo, content, userId } = posts.find(
     (item) => item.id === id
   );
   const navigate = useNavigate();
-
+  const isOwner = user === userId;
   const deletedLetter = () => {
     const isDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!isDelete) return;
     navigate(`/`);
+    dispatch(__deleteDatas(id));
     dispatch(deleteLetter(id));
   };
   const handleEditClick = () => {
@@ -35,6 +42,7 @@ function Detail() {
       if (!isModified) return;
       setIsEditing(false);
     }
+    dispatch(__editDatas({ id, content: editedContent }));
     dispatch(modifyLetter({ id, editedContent }));
   };
   return (
@@ -71,10 +79,12 @@ function Detail() {
         ) : (
           <>
             <NewContent>{content}</NewContent>
-            <ButtonWrapper>
-              <button onClick={handleEditClick}>수정</button>
-              <button onClick={() => deletedLetter()}>삭제</button>
-            </ButtonWrapper>
+            {isOwner && ( // 작성자와 로그인한 사용자가 동일한 경우에만 수정 및 삭제 버튼 표시
+              <ButtonWrapper>
+                <button onClick={handleEditClick}>수정</button>
+                <button onClick={() => deletedLetter()}>삭제</button>
+              </ButtonWrapper>
+            )}
           </>
         )}
       </LetterDetailWrapper>

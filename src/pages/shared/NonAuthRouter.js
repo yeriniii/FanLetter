@@ -8,7 +8,7 @@ function NonAuthRouter() {
     if (token) {
       navigate(`/`);
     }
-  }, []);
+  }, [navigate]);
   return <Outlet />;
 }
 

@@ -14,7 +14,7 @@ function AuthRouter() {
       navigate(`/login`);
     }
     setRendered(true);
-  }, []);
+  }, [navigate]);
   if (!rendered) {
     return null;
   }
