@@ -5,7 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 function Letter({ Fandata }) {
   const navigate = useNavigate();
-
+  function formatCreatedAt(date) {
+    const formattedDate = new Date(date);
+    const year = formattedDate.getFullYear();
+    const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(formattedDate.getDate()).padStart(2, "0");
+    const hours = String(formattedDate.getHours()).padStart(2, "0");
+    const minutes = String(formattedDate.getMinutes()).padStart(2, "0");
+    return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+  }
   return (
     <LetterWrapper
       key={Fandata.id}
@@ -20,7 +28,7 @@ function Letter({ Fandata }) {
         </FanImage>
         <FanInfo>
           <p>{Fandata.nickname}</p>
-          <p>{Fandata.createdAt}</p>
+          <p>{formatCreatedAt(Fandata.createdAt)}</p>
         </FanInfo>
       </FanData>
       <Content>{Fandata.content}</Content>

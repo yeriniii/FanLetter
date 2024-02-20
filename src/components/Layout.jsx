@@ -5,22 +5,46 @@ import styled from "styled-components";
 import { logouted } from "../redux/modules/authSlice";
 import { useEffect } from "react";
 import { useState } from "react";
+import { showModal, hideModal } from "../redux/modules/modal";
+import ValidationModal from "../components/ValidationModal";
+import { useSelector } from "react-redux";
 function Layout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isVisible, message, onConfirm, showCancelButton } = useSelector(
+    (state) => state.modal
+  );
   const [user, setUser] = useState(localStorage.getItem("userId"));
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     setUser(userId);
   }, [user]);
   const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("nickname");
-    dispatch(logouted());
-    setUser(null);
-    //로그아웃되면 바로로그인화면
-    navigate(`/login`);
+    /*localStorage.removeItem("access");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("nickname");
+          localStorage.removeItem("avatar");
+          dispatch(logouted());
+          setUser(null);
+          //로그아웃되면 바로로그인화면
+          navigate(`/login`);*/
+    dispatch(
+      showModal({
+        message: "정말 로그아웃 하시겠습니까?",
+        showCancelButton: true,
+        onConfirm: async () => {
+          dispatch(hideModal());
+          localStorage.removeItem("access");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("nickname");
+          localStorage.removeItem("avatar");
+          dispatch(logouted());
+          setUser(null);
+          //로그아웃되면 바로로그인화면
+          navigate(`/login`);
+        },
+      })
+    );
   };
 
   return (
@@ -37,8 +61,17 @@ function Layout() {
         <NavRight>
           {user ? (
             <>
-              <UserInfo>{user}</UserInfo>
+              <UserId>{user}</UserId>
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+              {isVisible && (
+                <ValidationModal
+                  isVisible={isVisible}
+                  message={message}
+                  onCancel={() => dispatch(hideModal())}
+                  onConfirm={onConfirm}
+                  showCancelButton={showCancelButton}
+                />
+              )}
             </>
           ) : (
             <ProfileLink to="/login">로그인</ProfileLink>
@@ -105,8 +138,9 @@ const LogoutButton = styled.button`
   }
 `;
 
-const UserInfo = styled.p`
-  margin-right: 20px;
+const UserId = styled.p`
+  font-weight: bold;
+  margin-bottom: 5px;
 `;
 
 export default Layout;

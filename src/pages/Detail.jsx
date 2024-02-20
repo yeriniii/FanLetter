@@ -10,13 +10,17 @@ import {
   deleteLetter,
   modifyLetter,
 } from "../redux/modules/data";
-
+import { showModal, hideModal } from "../redux/modules/modal";
+import ValidationModal from "../components/ValidationModal";
 function Detail() {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.data);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState("");
   const user = localStorage.getItem("userId");
+  const { isVisible, message, onConfirm, showCancelButton } = useSelector(
+    (state) => state.modal
+  );
   const { id } = useParams();
   const { avatar, nickname, createdAt, writedTo, content, userId } = posts.find(
     (item) => item.id === id
@@ -24,11 +28,23 @@ function Detail() {
   const navigate = useNavigate();
   const isOwner = user === userId;
   const deletedLetter = () => {
-    const isDelete = window.confirm("정말로 삭제하시겠습니까?");
+    dispatch(
+      showModal({
+        message: "정말로 삭제하시겠습니까?",
+        showCancelButton: true,
+        onConfirm: async () => {
+          dispatch(hideModal());
+          navigate(`/`);
+          dispatch(__deleteDatas(id));
+          dispatch(deleteLetter(id));
+        },
+      })
+    );
+    /*const isDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (!isDelete) return;
     navigate(`/`);
     dispatch(__deleteDatas(id));
-    dispatch(deleteLetter(id));
+    dispatch(deleteLetter(id));*/
   };
   const handleEditClick = () => {
     setIsEditing(true); // 수정 모드로 변경
@@ -36,14 +52,31 @@ function Detail() {
   };
   const handleSaveClick = () => {
     if (content === editedContent) {
-      alert("변경사항이 없습니다!");
+      //alert("변경사항이 없습니다!");
+      dispatch(
+        showModal({
+          message: "변경사항이 없습니다!",
+        })
+      );
     } else {
-      const isModified = window.confirm("이대로 변경하시겠습니까?");
+      /*const isModified = window.confirm("이대로 변경하시겠습니까?");
       if (!isModified) return;
-      setIsEditing(false);
+      setIsEditing(false);*/
+      dispatch(
+        showModal({
+          message: "이대로 변경하시겠습니까?",
+          showCancelButton: true,
+          onConfirm: async () => {
+            dispatch(hideModal());
+            setIsEditing(false);
+            dispatch(__editDatas({ id, content: editedContent }));
+            dispatch(modifyLetter({ id, editedContent }));
+          },
+        })
+      );
     }
-    dispatch(__editDatas({ id, content: editedContent }));
-    dispatch(modifyLetter({ id, editedContent }));
+    //dispatch(__editDatas({ id, content: editedContent }));
+    //dispatch(modifyLetter({ id, editedContent }));
   };
   return (
     <>
@@ -86,6 +119,15 @@ function Detail() {
               </ButtonWrapper>
             )}
           </>
+        )}
+        {isVisible && (
+          <ValidationModal
+            isVisible={isVisible}
+            message={message}
+            onCancel={() => dispatch(hideModal())}
+            onConfirm={onConfirm}
+            showCancelButton={showCancelButton}
+          />
         )}
       </LetterDetailWrapper>
     </>
@@ -135,6 +177,7 @@ const NewContent = styled.div`
   margin-top: 15px;
   color: white;
   font-size: 30px;
+  padding: 5px;
   font-weight: 400;
   width: 100%;
   height: 60%;

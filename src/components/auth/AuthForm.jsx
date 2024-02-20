@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { login, register } from "../../apis/login";
 import useForm from "hooks/useForm";
 import { logined } from "../../redux/modules/authSlice";
+import { showModal, hideModal } from "../../redux/modules/modal";
+import ValidationModal from "../../components/ValidationModal";
 const textMap = {
   login: "로그인",
   register: "회원가입",
@@ -17,6 +19,8 @@ const AuthForm = ({ type }) => {
   const [pw, onChangePw] = useForm();
   const [name, onChangeName] = useForm();
   const [errorMsg, setErrorMsg] = useState();
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  const { isVisible, message } = useSelector((state) => state.modal);
   const authHandler = async (e) => {
     e.preventDefault();
     try {
@@ -28,9 +32,8 @@ const AuthForm = ({ type }) => {
           localStorage.setItem("userId", userId);
           localStorage.setItem("nickname", nickname);
           localStorage.setItem("avatar", avatar);
-          alert("로그인 완료");
-          navigate(`/`);
           dispatch(logined());
+          navigate(`/`);
         } else {
           // 로그인 실패
           setErrorMsg(loginResult);
@@ -38,7 +41,12 @@ const AuthForm = ({ type }) => {
       } else if (type === "register") {
         const registerResult = await register(id, pw, name);
         if (registerResult && registerResult.success) {
-          alert("회원가입완료");
+          dispatch(
+            showModal({
+              message: "회원가입이 완료되었습니다.",
+            })
+          );
+          //alert("회원가입완료");
           navigate(`/login`);
         } else {
           setErrorMsg(registerResult);
@@ -93,6 +101,17 @@ const AuthForm = ({ type }) => {
           )}
         </Footer>
       </AuthFormWrapper>
+      {isVisible && (
+        <ValidationModal
+          isVisible={isVisible}
+          message={message}
+          onCancel={() => dispatch(hideModal())}
+          onConfirm={() => {
+            dispatch(hideModal());
+          }}
+          showCancelButton={false}
+        />
+      )}
     </AuthWrapper>
   );
 };
