@@ -2,11 +2,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { logouted } from "../redux/modules/authSlice";
+import { logouted } from "../../redux/modules/authSlice";
 import { useEffect } from "react";
 import { useState } from "react";
-import { showModal, hideModal } from "../redux/modules/modal";
-import ValidationModal from "../components/ValidationModal";
+import { showModal, hideModal } from "../../redux/modules/modal";
+import ValidationModal from "../ValidationModal";
 import { useSelector } from "react-redux";
 function Layout() {
   const dispatch = useDispatch();

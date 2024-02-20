@@ -1,14 +1,9 @@
 const SHOW_MODAL = "SHOW_MODAL";
 const HIDE_MODAL = "HIDE_MODAL";
 
-export const showModal = ({
-  message,
-  onCancel,
-  onConfirm,
-  showCancelButton,
-}) => ({
+export const showModal = (payload) => ({
   type: SHOW_MODAL,
-  payload: { message, onCancel, onConfirm, showCancelButton },
+  payload,
 });
 
 export const hideModal = () => ({

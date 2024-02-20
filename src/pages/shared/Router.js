@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "pages/Home";
-import Detail from "pages/Detail";
+import Detail from "../../components/Letters/Detail";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
-import MyPage from "pages/MyPage";
+import MyPage from "../../components/MyPage";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";

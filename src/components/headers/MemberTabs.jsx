@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
-import { selectMember } from "../redux/modules/member";
+import { selectMember } from "../../redux/modules/member";
 
 const MemberTabs = () => {
   const dispatch = useDispatch();

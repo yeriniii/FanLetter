@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Header";
-import LetterForm from "../components/LetterForm";
-import LetterList from "../components/LetterList";
+import Header from "../components/headers/Header";
+import LetterForm from "../components/Letters/LetterForm";
+import LetterList from "../components/Letters/LetterList";
 import styled from "styled-components";
-import Layout from "components/Layout";
+import Layout from "../components/headers/Layout";
 
 function Home() {
   return (

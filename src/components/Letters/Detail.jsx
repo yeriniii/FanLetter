@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -9,9 +9,9 @@ import {
   __editDatas,
   deleteLetter,
   modifyLetter,
-} from "../redux/modules/data";
-import { showModal, hideModal } from "../redux/modules/modal";
-import ValidationModal from "../components/ValidationModal";
+} from "../../redux/modules/data";
+import { showModal, hideModal } from "../../redux/modules/modal";
+import ValidationModal from "../ValidationModal";
 function Detail() {
   const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.data);
@@ -183,6 +183,7 @@ const NewContent = styled.div`
   height: 60%;
   border-radius: 8px;
   letter-spacing: 3px;
+  overflow: auto; /* 스크롤 활성화 */
   textarea {
     background-color: black;
     color: white;

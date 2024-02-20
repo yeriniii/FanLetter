@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import default_profile from "../assets/default_profile.png";
+import default_profile from "../../assets/default_profile.png";
 import { useNavigate } from "react-router-dom";
 
 function Letter({ Fandata }) {

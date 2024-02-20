@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { __postDatas, addLetter } from "../redux/modules/data";
+import { __postDatas, addLetter } from "../../redux/modules/data";
 
 const LetterForm = () => {
   const dispatch = useDispatch();

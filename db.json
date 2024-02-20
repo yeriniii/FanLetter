@@ -45,7 +45,7 @@
       "createdAt": "Tue Feb 20 2024 20:57:06 GMT+0900 (한국 표준시)",
       "writedTo": "카리나",
       "nickname": "아보카도!",
-      "content": "오들어감 수정되나?????00000dhdhdhhd",
+      "content": "오들어감 수정되나?????00000dhdhdhhdds",
       "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-19/ce6d3b7b-56de-4699-b028-9d5b49949d16.jpg",
       "userId": "yerin"
     },
@@ -55,6 +55,15 @@
       "writedTo": "윈터",
       "nickname": "아보카도!",
       "content": "신기방기??또안돼왜?",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-19/ce6d3b7b-56de-4699-b028-9d5b49949d16.jpg",
+      "userId": "yerin"
+    },
+    {
+      "id": "0b02cd79-c1d5-4c0b-86d0-b6acb256884a",
+      "createdAt": "Wed Feb 21 2024 00:12:07 GMT+0900 (한국 표준시)",
+      "writedTo": "카리나",
+      "nickname": "아보카도!?",
+      "content": "rntrnt",
       "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-19/ce6d3b7b-56de-4699-b028-9d5b49949d16.jpg",
       "userId": "yerin"
     }
