@@ -1,9 +1,9 @@
-import { getMyPage } from "apis/login";
+import { getMyPage } from "apis/AuthApis";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import default_profile from "../assets/default_profile.png";
-import { updateProfile } from "apis/login";
+import { updateProfile } from "apis/AuthApis";
 import { useNavigate } from "react-router-dom";
 function MyPage() {
   const [data, setData] = useState();

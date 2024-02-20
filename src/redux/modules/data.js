@@ -100,6 +100,7 @@ const dataSlice = createSlice({
       };
     },
   },
+  //다른함수들도 하는게좋겠지...
   extraReducers: {
     [__getDatas.fulfilled]: (state, action) => {
       state.isLoading = false;

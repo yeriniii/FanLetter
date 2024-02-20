@@ -60,7 +60,7 @@ const CancelClickBtnStyle = styled.button`
   padding: 10px 40px;
   cursor: pointer;
   &:hover {
-    background-color: #d8d8d8;
+    background-color: #999;
   }
 `;
 // 모달 확인버튼 스타일

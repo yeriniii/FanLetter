@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import MemberTabs from "./MemberTabs";
 import aespa from "../assets/aespa.jpeg";
-import Layout from "./Layout";
 
 const Header = ({ setSelectMember, selectMember }) => {
   return (

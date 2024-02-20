@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "../components/Header";
 import LetterForm from "../components/LetterForm";
 import LetterList from "../components/LetterList";
 import styled from "styled-components";
 import Layout from "components/Layout";
-import { useSelector } from "react-redux";
 
 function Home() {
   return (

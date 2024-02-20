@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { __postDatas, addLetter } from "../redux/modules/data";
 
 const LetterForm = () => {
@@ -150,8 +150,5 @@ const SubmitButton = styled.div`
     }
   }
 `;
-const LoginMsg = styled.div`
-  text-align: center;
-  font-weight: bold;
-`;
+
 export default LetterForm;
