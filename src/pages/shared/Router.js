@@ -13,19 +13,6 @@ import NonAuthRouter from "./NonAuthRouter";
 import AuthRouter from "./AuthRouter";
 
 const Router = () => {
-  const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.data);
-  useEffect(() => {
-    // 페이지가 로드될 때 데이터 가져오기
-    dispatch(__getDatas());
-  }, [dispatch]);
-
-  if (isLoading) {
-    return <div>loading..</div>;
-  }
-  if (error) {
-    return <div>{error.message}</div>;
-  }
   return (
     <BrowserRouter>
       <Routes>
