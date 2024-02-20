@@ -16,23 +16,33 @@ const AuthForm = ({ type }) => {
   const [id, onChangeId] = useForm();
   const [pw, onChangePw] = useForm();
   const [name, onChangeName] = useForm();
-
+  const [errorMsg, setErrorMsg] = useState();
   const authHandler = async (e) => {
     e.preventDefault();
     try {
       if (type === "login") {
-        const result = await login(id, pw);
-        const { accessToken, userId, success, avatar, nickname } = result;
-        localStorage.setItem("access", accessToken);
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("nickname", nickname);
-        alert("로그인완료");
-        navigate(`/`);
-        dispatch(logined());
+        const loginResult = await login(id, pw);
+        if (loginResult && loginResult.success) {
+          const { accessToken, userId, avatar, nickname } = loginResult;
+          localStorage.setItem("access", accessToken);
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("nickname", nickname);
+          localStorage.setItem("avatar", avatar);
+          alert("로그인 완료");
+          navigate(`/`);
+          dispatch(logined());
+        } else {
+          // 로그인 실패
+          setErrorMsg(loginResult);
+        }
       } else if (type === "register") {
-        await register(id, pw, name);
-        alert("회원가입완료");
-        navigate(`/login`);
+        const registerResult = await register(id, pw, name);
+        if (registerResult && registerResult.success) {
+          alert("회원가입완료");
+          navigate(`/login`);
+        } else {
+          setErrorMsg(registerResult);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +51,7 @@ const AuthForm = ({ type }) => {
   return (
     <AuthWrapper>
       <AuthFormWrapper>
-        <h1>Aespa FanLetter</h1>
+        <h1>FanLetter</h1>
         <h3>{text}</h3>
         <Auth onSubmit={authHandler}>
           <input
@@ -49,12 +59,14 @@ const AuthForm = ({ type }) => {
             placeholder="아이디(4~10글자)"
             value={id}
             onChange={onChangeId}
+            required
           />
           <input
             type="password"
             placeholder="비밀번호(4~15글자)"
             value={pw}
             onChange={onChangePw}
+            required
           />
           {type === "register" && (
             <input
@@ -63,9 +75,12 @@ const AuthForm = ({ type }) => {
               type="text"
               name="username"
               placeholder="닉네임(1~10글자)"
+              required
             ></input>
           )}
-
+          {errorMsg && (
+            <div style={{ color: "red", fontSize: "16px" }}>{errorMsg}</div>
+          )}
           <ButtonWrapper>
             <button>{text}</button>
           </ButtonWrapper>
@@ -111,13 +126,15 @@ const AuthFormWrapper = styled.div`
   height: 50%;
   display: flex;
   input {
+    font-size: 15px;
     margin-bottom: 20px;
     border: none;
     border-bottom: 2px solid gray;
     padding-bottom: 0.3rem;
     outline: none;
     &:focus {
-      border-bottom: 2px solid teal;
+      border: 3px solid teal;
+      border-radius: 5px;
     }
   }
 `;

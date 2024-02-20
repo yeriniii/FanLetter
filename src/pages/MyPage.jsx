@@ -10,6 +10,7 @@ function MyPage() {
   const [isEdit, setIsEdit] = useState(false);
   const [editName, setEditName] = useState("");
   const [editImg, setEditImg] = useState();
+  const [message, setMessage] = useState();
   const navigate = useNavigate();
   useEffect(() => {
     getMyPage().then((res) => {
@@ -26,8 +27,12 @@ function MyPage() {
     try {
       const accessToken = localStorage.getItem("access");
       const response = await updateProfile(accessToken, editImg, editName);
-      console.log(response.message);
+      setMessage(response.message);
+      localStorage.setItem("nickname", editName);
       setIsEdit(false);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000); // 3초 후에 메시지를 초기화합니다.
     } catch (error) {
       console.log("프로필업뎃안됌");
     }
@@ -80,6 +85,7 @@ function MyPage() {
               <button onClick={handleEdit}>프로필 수정</button>
             )}
           </Button>
+          {message && <Message>{message}</Message>}
         </MyPageWrapper>
       </Container>
     </>
@@ -188,5 +194,10 @@ const HomeBtn = styled.div`
       transform: scale(1.2);
     }
   }
+`;
+const Message = styled.div`
+  margin-top: 20px;
+  color: teal;
+  font-weight: bold;
 `;
 export default MyPage;

@@ -3,19 +3,24 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logouted } from "../redux/modules/authSlice";
+import { useEffect } from "react";
+import { useState } from "react";
 function Layout() {
-  const isLoggedIn = true; // 로그인 상태를 확인하는 예시 코드입니다.
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  if (!isLoggedIn) {
-    return null; // 로그인되지 않은 경우 렌더링하지 않습니다.
-  }
+
+  const [user, setUser] = useState(localStorage.getItem("userId"));
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setUser(userId);
+  }, [user]);
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("userId");
     localStorage.removeItem("nickname");
     dispatch(logouted());
-    navigate(`/login`);
+    setUser(null);
+    //로그아웃되면 바로로그인화면
+    //navigate(`/login`);
   };
 
   return (
@@ -29,13 +34,21 @@ function Layout() {
             <ProfileLink to="/mypage">내 프로필</ProfileLink>
           </NavItem>
         </NavList>
-        <NavItem>
-          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-        </NavItem>
+        <NavRight>
+          {user ? (
+            <>
+              <UserInfo>{user}</UserInfo>
+              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+            </>
+          ) : (
+            <ProfileLink to="/login">로그인</ProfileLink>
+          )}
+        </NavRight>
       </Nav>
     </HeaderContainer>
   );
 }
+
 const HeaderContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   color: white;
@@ -63,6 +76,12 @@ const NavItem = styled.li`
   display: inline-block;
   margin-right: 20px;
 `;
+
+const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const ProfileLink = styled(Link)`
   color: black;
   text-decoration: none;
@@ -71,6 +90,7 @@ const ProfileLink = styled(Link)`
     color: gold;
   }
 `;
+
 const LogoutButton = styled.button`
   color: black;
   font-size: 15px;
@@ -79,8 +99,14 @@ const LogoutButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  margin-left: 20px;
   &:hover {
     color: gold;
   }
 `;
+
+const UserInfo = styled.p`
+  margin-right: 20px;
+`;
+
 export default Layout;

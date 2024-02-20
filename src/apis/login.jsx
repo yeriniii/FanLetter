@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const login = async (id, password) => {
   try {
@@ -12,7 +13,8 @@ export const login = async (id, password) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    return error.response.data.message;
+    //console.log(error);
   }
 };
 export const register = async (id, password, nickname) => {
@@ -27,7 +29,8 @@ export const register = async (id, password, nickname) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data.message);
+    return error.response.data.message;
   }
 };
 

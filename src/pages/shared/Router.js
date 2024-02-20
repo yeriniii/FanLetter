@@ -9,14 +9,17 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { __getDatas } from "../../redux/modules/data";
+import NonAuthRouter from "./NonAuthRouter";
+import AuthRouter from "./AuthRouter";
 
 const Router = () => {
-  const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector((state) => state.data);
   useEffect(() => {
+    // 페이지가 로드될 때 데이터 가져오기
     dispatch(__getDatas());
   }, [dispatch]);
+
   if (isLoading) {
     return <div>loading..</div>;
   }
@@ -26,20 +29,15 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={isLogin ? <Home /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/mypage"
-          element={isLogin ? <MyPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/letters/:id"
-          element={isLogin ? <Detail /> : <Navigate to="/login" />}
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route element={<NonAuthRouter />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+        <Route element={<AuthRouter />}>
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/letters/:id" element={<Detail />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

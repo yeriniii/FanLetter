@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function Letter({ Fandata }) {
   const navigate = useNavigate();
+
   return (
     <LetterWrapper
       key={Fandata.id}
@@ -52,8 +53,11 @@ const FanImage = styled.div`
   overflow: hidden;
   height: 110px;
   border-radius: 50%;
-  &img {
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    max-width: 100%;
     height: auto;
     border-radius: 50px;
     object-fit: cover;

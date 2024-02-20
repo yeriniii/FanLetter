@@ -7,7 +7,6 @@ import Layout from "./Layout";
 const Header = ({ setSelectMember, selectMember }) => {
   return (
     <Container>
-      <Layout />
       <Title>에스파 팬레터 컬렉션</Title>
       <MemberTabs
         selectMember={selectMember}

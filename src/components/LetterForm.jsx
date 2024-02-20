@@ -1,15 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLetter } from "../redux/modules/data";
 
 const LetterForm = () => {
   const dispatch = useDispatch();
-  //const [nickname, setNickname] = useState("");
+
   const [content, setContent] = useState("");
   const [selectedMember, setSelectedMember] = useState("카리나");
+  const isLogin = useSelector((state) => state.auth.isLogin);
   const nickname = localStorage.getItem("nickname");
-  console.log(nickname);
+  const profilImg = localStorage.getItem("avatar");
   const handleSubmit = (e) => {
     e.preventDefault();
     if (nickname === "" || content === "") {
@@ -26,6 +27,7 @@ const LetterForm = () => {
           writedTo: selectedMember,
           nickname,
           content,
+          avatar: profilImg,
         })
       );
       setContent("");
@@ -36,39 +38,44 @@ const LetterForm = () => {
   return (
     <LetterFormWrapper>
       <AddForm onSubmit={handleSubmit}>
-        <FormField>
-          <label id="nickname">닉네임:</label>
-          <p>{nickname}</p>
-        </FormField>
+        {isLogin ? ( //로그인했다면 폼보여주고 안했으면 로그인하라는메세지띄워줌
+          <>
+            <FormField>
+              <label id="nickname">닉네임:</label>
+              <p>{nickname}</p>
+            </FormField>
 
-        <FormField>
-          <label id="content">내용:</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            cols="30"
-            rows="5"
-            placeholder="최대 100자까지만 작성할 수 있습니다."
-          ></textarea>{" "}
-        </FormField>
+            <FormField>
+              <label id="content">내용:</label>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                cols="30"
+                rows="5"
+                placeholder="최대 100자까지만 작성할 수 있습니다."
+              ></textarea>{" "}
+            </FormField>
 
-        <FormField>
-          <label id="selectmember">누구에게 보내실건가요?</label>
-          <select
-            id="aespa"
-            value={selectedMember}
-            onChange={(e) => setSelectedMember(e.target.value)}
-          >
-            <option value="카리나">카리나</option>
-            <option value="윈터">윈터</option>
-            <option value="닝닝">닝닝</option>
-            <option value="지젤">지젤</option>
-          </select>
-        </FormField>
-
-        <SubmitButton>
-          <button type="submit">팬레터 등록</button>
-        </SubmitButton>
+            <FormField>
+              <label id="selectmember">누구에게 보내실건가요?</label>
+              <select
+                id="aespa"
+                value={selectedMember}
+                onChange={(e) => setSelectedMember(e.target.value)}
+              >
+                <option value="카리나">카리나</option>
+                <option value="윈터">윈터</option>
+                <option value="닝닝">닝닝</option>
+                <option value="지젤">지젤</option>
+              </select>
+            </FormField>
+            <SubmitButton>
+              <button type="submit">팬레터 등록</button>
+            </SubmitButton>
+          </>
+        ) : (
+          <LoginMsg>로그인 후 이용 가능합니다.</LoginMsg>
+        )}
       </AddForm>
     </LetterFormWrapper>
   );
@@ -134,5 +141,9 @@ const SubmitButton = styled.div`
       color: black;
     }
   }
+`;
+const LoginMsg = styled.div`
+  text-align: center;
+  font-weight: bold;
 `;
 export default LetterForm;
