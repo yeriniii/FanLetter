@@ -50,22 +50,13 @@
       "userId": "yerin"
     },
     {
-      "id": "b45011ee-2eaf-44c4-96b7-fa6119c3a064",
-      "createdAt": "Tue Feb 20 2024 21:29:55 GMT+0900 (한국 표준시)",
+      "id": "6a09b29c-ea0b-47e0-95f0-840935aeb212",
+      "createdAt": "Wed Feb 21 2024 16:54:38 GMT+0900 (한국 표준시)",
       "writedTo": "윈터",
-      "nickname": "아보카도!",
-      "content": "신기방기??또안돼왜?",
-      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-19/ce6d3b7b-56de-4699-b028-9d5b49949d16.jpg",
-      "userId": "yerin"
-    },
-    {
-      "id": "0b02cd79-c1d5-4c0b-86d0-b6acb256884a",
-      "createdAt": "Wed Feb 21 2024 00:12:07 GMT+0900 (한국 표준시)",
-      "writedTo": "카리나",
-      "nickname": "아보카도!?",
-      "content": "rntrnt",
-      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-19/ce6d3b7b-56de-4699-b028-9d5b49949d16.jpg",
-      "userId": "yerin"
+      "nickname": "ㅎㅎggg",
+      "content": "갑자기왜또잘돼?ㅠㅠ",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-21/81f4590b-4efd-4bf7-b185-1d098c804e3a.jpg",
+      "userId": "yerins"
     }
   ]
 }

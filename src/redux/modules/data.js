@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
+import { dataInstance } from "../../axios/api";
 const initialState = {
   isLoading: false,
   posts: [],
@@ -12,7 +12,7 @@ export const __getDatas = createAsyncThunk(
   async (payload, thunkAPI) => {
     //서버통신
     try {
-      const response = await axios.get("http://localhost:5001/posts");
+      const response = await dataInstance.get("/posts");
       console.log(response.data);
       //네트워크 요청성공시 디스패치해주는 기능
       return response.data;
@@ -27,7 +27,7 @@ export const __postDatas = createAsyncThunk(
   async (payload, thunkAPI) => {
     //서버통신
     try {
-      const response = await axios.post("http://localhost:5001/posts", payload);
+      const response = await dataInstance.post("/posts", payload);
       console.log(response.data);
       //네트워크 요청성공시 디스패치해주는 기능
       return response.data;
@@ -43,9 +43,7 @@ export const __deleteDatas = createAsyncThunk(
   async (payload, thunkAPI) => {
     //서버통신
     try {
-      const response = await axios.delete(
-        `http://localhost:5001/posts/${payload}`
-      );
+      const response = await dataInstance.delete(`/posts/${payload}`);
       console.log(response.data);
       //네트워크 요청성공시 디스패치해주는 기능
       return response.data;
@@ -61,12 +59,9 @@ export const __editDatas = createAsyncThunk(
   async (payload, thunkAPI) => {
     //서버통신
     try {
-      const response = await axios.patch(
-        `http://localhost:5001/posts/${payload.id}`,
-        {
-          content: payload.content,
-        }
-      );
+      const response = await dataInstance.patch(`/posts/${payload.id}`, {
+        content: payload.content,
+      });
       console.log(response.data);
       //네트워크 요청성공시 디스패치해주는 기능
       return response.data;

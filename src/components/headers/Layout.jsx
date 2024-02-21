@@ -38,7 +38,7 @@ function Layout() {
           localStorage.removeItem("userId");
           localStorage.removeItem("nickname");
           localStorage.removeItem("avatar");
-          dispatch(logouted());
+          //dispatch(logouted());
           setUser(null);
           //로그아웃되면 바로로그인화면
           navigate(`/login`);

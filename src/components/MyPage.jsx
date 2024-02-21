@@ -7,6 +7,7 @@ import { updateProfile } from "apis/AuthApis";
 import { useNavigate } from "react-router-dom";
 function MyPage() {
   const [data, setData] = useState();
+
   const [isEdit, setIsEdit] = useState(false);
   const [editName, setEditName] = useState("");
   const [editImg, setEditImg] = useState();
@@ -24,11 +25,23 @@ function MyPage() {
     setEditImg(data.avatar);
   };
   const handleEditSave = async () => {
+    if (
+      editImg === localStorage.getItem("avatar") &&
+      editName === localStorage.getItem("nickname")
+    ) {
+      // 변경 사항이 없는 경우
+      setMessage("변경 사항이 없습니다");
+      setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+      return; // 함수 종료
+    }
     try {
       const accessToken = localStorage.getItem("access");
       const response = await updateProfile(accessToken, editImg, editName);
       setMessage(response.message);
       localStorage.setItem("nickname", editName);
+      localStorage.setItem("avatar", editImg);
       setIsEdit(false);
       setTimeout(() => {
         setMessage(null);

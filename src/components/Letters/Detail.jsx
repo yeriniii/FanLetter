@@ -28,23 +28,26 @@ function Detail() {
   const navigate = useNavigate();
   const isOwner = user === userId;
   const deletedLetter = () => {
+    // handleConfirm 함수 정의
+    const handleConfirm = async () => {
+      dispatch(hideModal());
+      navigate(`/`);
+      try {
+        await dispatch(__deleteDatas(id));
+        dispatch(deleteLetter(id));
+      } catch (error) {
+        console.error("Failed to delete data:", error);
+        // 에러 처리 로직 추가
+      }
+    };
+
     dispatch(
       showModal({
         message: "정말로 삭제하시겠습니까?",
         showCancelButton: true,
-        onConfirm: async () => {
-          dispatch(hideModal());
-          navigate(`/`);
-          dispatch(__deleteDatas(id));
-          dispatch(deleteLetter(id));
-        },
+        onConfirm: handleConfirm, // handleConfirm 함수를 전달
       })
     );
-    /*const isDelete = window.confirm("정말로 삭제하시겠습니까?");
-    if (!isDelete) return;
-    navigate(`/`);
-    dispatch(__deleteDatas(id));
-    dispatch(deleteLetter(id));*/
   };
   const handleEditClick = () => {
     setIsEditing(true); // 수정 모드로 변경
@@ -56,6 +59,10 @@ function Detail() {
       dispatch(
         showModal({
           message: "변경사항이 없습니다!",
+          showCancelButton: false,
+          onConfirm: () => {
+            dispatch(hideModal());
+          },
         })
       );
     } else {
@@ -66,14 +73,24 @@ function Detail() {
         showModal({
           message: "이대로 변경하시겠습니까?",
           showCancelButton: true,
-          onConfirm: async () => {
-            dispatch(hideModal());
-            setIsEditing(false);
-            dispatch(__editDatas({ id, content: editedContent }));
-            dispatch(modifyLetter({ id, editedContent }));
+          onConfirm: () => {
+            // 사용자가 확인 버튼을 눌렀을 때 실행되어야 하는 비동기 동작을 처리합니다.
+            handleConfirm();
           },
         })
       );
+
+      const handleConfirm = async () => {
+        dispatch(hideModal());
+        setIsEditing(false);
+        try {
+          await dispatch(__editDatas({ id, content: editedContent }));
+          dispatch(modifyLetter({ id, editedContent }));
+        } catch (error) {
+          console.error("Failed to edit data:", error);
+          // 에러 처리 로직 추가
+        }
+      };
     }
     //dispatch(__editDatas({ id, content: editedContent }));
     //dispatch(modifyLetter({ id, editedContent }));

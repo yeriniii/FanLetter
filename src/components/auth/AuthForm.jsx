@@ -31,7 +31,7 @@ const AuthForm = ({ type }) => {
           localStorage.setItem("userId", userId);
           localStorage.setItem("nickname", nickname);
           localStorage.setItem("avatar", avatar);
-          dispatch(logined());
+          //dispatch(logined());
           navigate(`/`);
         } else {
           // 로그인 실패

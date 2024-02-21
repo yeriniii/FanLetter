@@ -1,15 +1,13 @@
 import axios from "axios";
+import { authInstance } from "../axios/api";
 //주석은 청크로 적은 부분
 
 export const login = async (id, password) => {
   try {
-    const response = await axios.post(
-      "https://moneyfulpublicpolicy.co.kr/login",
-      {
-        id: id,
-        password: password,
-      }
-    );
+    const response = await authInstance.post("/login", {
+      id: id,
+      password: password,
+    });
     return response.data;
   } catch (error) {
     return error.response.data.message;
@@ -35,14 +33,11 @@ export const __login = createAsyncThunk(
 */
 export const register = async (id, password, nickname) => {
   try {
-    const response = await axios.post(
-      "https://moneyfulpublicpolicy.co.kr/register",
-      {
-        id: id,
-        password: password,
-        nickname: nickname,
-      }
-    );
+    const response = await authInstance.post("/register", {
+      id: id,
+      password: password,
+      nickname: nickname,
+    });
     return response.data;
   } catch (error) {
     console.log(error.response.data.message);
@@ -69,15 +64,12 @@ export const __register = createAsyncThunk(
 export const getMyPage = async () => {
   try {
     const accessToken = localStorage.getItem("access");
-    const response = await axios.get(
-      `https://moneyfulpublicpolicy.co.kr/user`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await authInstance.get("/user", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     if (error.response.status === 401) {
@@ -116,16 +108,12 @@ export const updateProfile = async (accessToken, imgFile, nickname) => {
     const formData = new FormData();
     formData.append("avatar", imgFile); //이미지 파일 추가
     formData.append("nickname", nickname);
-    const response = await axios.patch(
-      `https://moneyfulpublicpolicy.co.kr/profile`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await authInstance.patch("/profile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
